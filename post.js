@@ -3,8 +3,8 @@ let currentPokemon = null;
 let isShowingFront = true;
 let isShiny = false;
 
-function getPokemon(pokemonName) {
-        
+function getPokemonWithName(pokemonName) {
+
     fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonName)
         .then((res) => res.json()
         ).then((pokemon) => {
@@ -55,10 +55,10 @@ function setImage(image) {
 
 function setAudio(audio) {
     let nameDiv = document.getElementById('audio_controls')
-    nameDiv.innerHTML = ''
     let fatherDiv = document.createElement('div')
-    fatherDiv.className ="audio_controls"
     let audioElement = document.createElement('audio')
+    nameDiv.innerHTML = ''
+    fatherDiv.className ="audio_controls"
     audioElement.controls = true
     audioElement.src = audio
     audioElement.type = "audio/wav"
@@ -152,11 +152,22 @@ function capitalize(text) {
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
 
+function getRandomPokemonId() {
+    const randomNum = Math.floor(Math.random() * 1302) + 1;
+    return randomNum <= 1025 ? randomNum : randomNum - 1025 + 10000
+}
+
+document.getElementById('randomSearchBtn').addEventListener('click', function () {
+    const pokemonId = getRandomPokemonId();
+    if (pokemonId) {
+        getPokemonWithName(pokemonId);
+    }
+});
 
 document.getElementById('searchBtn').addEventListener('click', function () {
     const pokemonName = document.getElementById('pokemonInput').value.trim().toLowerCase();
     if (pokemonName) {
-        getPokemon(pokemonName);
+        getPokemonWithName(pokemonName);
     }
 });
 
