@@ -1,4 +1,4 @@
-.bordered {
+.card {
     background-color: black;
     display: flex;
     flex-direction: column;
@@ -9,6 +9,18 @@
     border-radius: 5%;
     min-width: 350px;
     /* Elementos de arriba a abajo */
+}
+.dimmed {
+    filter: saturate(0.3) brightness(0.7);
+    pointer-events: none;
+    /* opcional, si quieres deshabilitarlo */
+}
+
+#pokemon_cards {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
 }
 
 .audio_controls {
@@ -34,7 +46,7 @@ legend {
     flex: 1;
 }
 
-#label_name {
+.label_name {
     display: flex;
     justify-content: center;
 }
@@ -43,7 +55,7 @@ legend {
     color: rgb(229, 229, 128);
 }
 
-#data {
+.data {
     display: flex;
     flex-direction: column;
     justify-items: center;
@@ -60,7 +72,7 @@ legend {
     gap: 20px;
 }
 
-#buttons_div {
+#main_buttons_div {
     display: flex;
     justify-content: center;
     gap: 10px;
