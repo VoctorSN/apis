@@ -11,8 +11,19 @@
     /* Elementos de arriba a abajo */
 }
 
+.audio_controls{
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+#audioPlayer{
+    background-color: rgb(229, 229, 128);
+}
+
 #pokemon_image {
     margin: 5%;
+    max-width: 300px;
 }
 
 legend {
@@ -91,4 +102,11 @@ body {
 .search_div{
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
+
+}
+
+#pokemonInput{
+    height: 30px;
+    border-radius: 10px;
 }
