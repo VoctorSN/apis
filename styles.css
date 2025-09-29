@@ -12,8 +12,7 @@
 }
 .dimmed {
     filter: saturate(0.3) brightness(0.7);
-    pointer-events: none;
-    /* opcional, si quieres deshabilitarlo */
+    /* Removido pointer-events: none para permitir clics */
 }
 
 #pokemon_cards {
@@ -30,6 +29,7 @@
 }
 
 #audioPlayer {
+    border-radius: 25px;
     background-color: rgb(229, 229, 128);
 }
 

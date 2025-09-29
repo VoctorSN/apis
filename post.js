@@ -192,14 +192,11 @@ function buildPreCard() {
             
             // Agregar evento click para navegar al pokémon anterior
             cardDiv.addEventListener('click', async () => {
+                console.log('pre');
+                
                 const prevPokemonId = currentPokemon.id - 1;
-                if (prevPokemonId > 0) {
-                    const prevPokemon = await getPokemonWithName(prevPokemonId);
-                    if (prevPokemon) {
-                        currentPokemon = prevPokemon;
-                        buildDocument();
-                        setData(currentPokemon);
-                    }
+                if (pokemonImage.src != 'default_image.png') {
+                    await searchPokemon(prevPokemonId);
                 }
             });
             
@@ -474,6 +471,15 @@ function getRandomPokemonId() {
     return randomNum <= 1025 ? randomNum : randomNum - 1025 + 10000
 }
 
+async function searchPokemon(pokemon) {
+    if (pokemon) {
+        currentPokemon = await getPokemonWithName(pokemon);
+
+        buildDocument();
+        setData(currentPokemon);
+    }
+}
+
 document.getElementById('randomSearchBtn').addEventListener('click', async function () {
     const pokemonId = getRandomPokemonId();
     if (pokemonId) {
@@ -484,12 +490,8 @@ document.getElementById('randomSearchBtn').addEventListener('click', async funct
 
 document.getElementById('searchBtn').addEventListener('click', async function () {
     const pokemonName = document.getElementById('pokemonInput').value.trim().toLowerCase();
-    if (pokemonName) {
-        currentPokemon = await getPokemonWithName(pokemonName);        
-
-        buildDocument();
-        setData(currentPokemon);
-    }
+    await searchPokemon(pokemonName)
+    
 });
 
 document.getElementById('pokemonInput').addEventListener('keypress', function (e) {
