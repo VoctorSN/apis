@@ -33,7 +33,7 @@
     background-color: rgb(229, 229, 128);
 }
 
-#pokemon_image {
+.pokemon_image {
     margin: 5%;
     max-width: 300px;
 }
