@@ -7,14 +7,17 @@
 </head>
 
 <body>
-    <h1 class="tituloPrincipal">Página Pokemon Voctor</h1>
-    <div class="body">
+    <div id="header">
+        <h1 class="tituloPrincipal">Página Pokemon Voctor</h1>
         <div class="search_div">
-            <input id="pokemonInput" style="min-width:200px;" type="text"
-                placeholder="Introduce el nombre del Pokemon" />
-            <button id="searchBtn">🔍</button>
             <button id="randomSearchBtn">🎲</button>
+            <div class="input-container">
+                <input id="pokemonInput" type="text" placeholder="Introduce el nombre del Pokemon" />
+                <span class="input-icon" id="searchBtn">🔍</span>
+            </div>
         </div>
+    </div>
+    <div class="body">
         <div id="pokemon_cards">
             <div class="card">
                 <div id="data">
