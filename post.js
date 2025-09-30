@@ -3,9 +3,9 @@ let currentPokemon = null;
 let isShowingFront = true;
 let isShiny = false;
 
-function modifyImageUrl(imageUrl, increment = 1) {
+function getNextPokemonImage(imageUrl, increment = 1) {
     if (!imageUrl) return null;
-    
+
     try {
         // Extraer el número (ID) del final de la URL
         const urlParts = imageUrl.split('/');
@@ -13,25 +13,26 @@ function modifyImageUrl(imageUrl, increment = 1) {
         const nameParts = filename.split('.'); // ["25", "png"]
         const currentId = parseInt(nameParts[0]); // 25
         const extension = nameParts[1]; // "png"
-        
+
         // Verificar que el ID sea válido
         if (isNaN(currentId)) return null;
-        
+
         // Calcular nuevo ID
         const newId = currentId + increment;
-        
+
         // Solo verificar que no sea menor que 1
         if (newId < 1) return null;
-        
+
         // Reconstruir la URL
         urlParts[urlParts.length - 1] = `${newId}.${extension}`;
-        
+
         return urlParts.join('/');
     } catch (err) {
         return null;
     }
 }
 
+///it also works with ID
 async function getPokemonWithName(pokemonName) {
     try {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
@@ -128,79 +129,61 @@ function createAudioControlsDiv() {
 function getPrePokemonImageUrl() {
     if (!currentPokemon || !currentPokemon.sprites) return null;
     const currentImageUrl = currentPokemon.sprites.front_default;
-    return modifyImageUrl(currentImageUrl, -1);
+    return getNextPokemonImage(currentImageUrl, -1);
 }
 
 function getPostPokemonImageUrl() {
     if (!currentPokemon || !currentPokemon.sprites) return null;
     const currentImageUrl = currentPokemon.sprites.front_default;
-    return modifyImageUrl(currentImageUrl, 1);
-}
-
-function preloadNeighborImages() {
-    // Precargar imágenes vecinas para mejor rendimiento
-    const prevUrl = getPrePokemonImageUrl();
-    const nextUrl = getPostPokemonImageUrl();
-    
-    if (prevUrl) {
-        const prevImg = new Image();
-        prevImg.src = prevUrl;
-    }
-    
-    if (nextUrl) {
-        const nextImg = new Image();
-        nextImg.src = nextUrl;
-    }
+    return getNextPokemonImage(currentImageUrl, 1);
 }
 
 function buildDocument() {
     // Limpiar contenedor principal
     let pokemonCardsDiv = document.getElementById('pokemon_cards')
     pokemonCardsDiv.innerHTML = ''
-    
+
     // Construir las tres cartas
     buildPreCard()
     buildMainCard()
     buildPostCard()
-    
-    // Precargar imágenes vecinas para mejor rendimiento
-    preloadNeighborImages()
 }
 
 function buildPreCard() {
     // Obtener el contenedor principal
     let pokemonCardsDiv = document.getElementById('pokemon_cards')
 
+
+
     let cardDiv = createCardDiv()
     cardDiv.className += ' dimmed'
     let dataDiv = createDataDiv()
     let pokemonImage = createPokemonImage()
     pokemonImage.id = 'pre_pokemon_image'
-    
+
+    // Agregar evento click para navegar al pokémon anterior
+    cardDiv.addEventListener('click', async () => {
+
+        const prevPokemonId = currentPokemon.id - 1;
+        if (pokemonImage.src != 'default_image.png') {
+            await searchPokemon(prevPokemonId);
+        }
+    });
+
+    cardDiv.style.cursor = 'pointer';
+
     try {
         // Intentar cargar la imagen anterior
         const currentImageUrl = currentPokemon.sprites.front_default;
-        const prevImageUrl = modifyImageUrl(currentImageUrl, -1);
-        
+        const prevImageUrl = getNextPokemonImage(currentImageUrl, -1);
+
         if (prevImageUrl) {
             pokemonImage.src = prevImageUrl;
-            
+
             // Si la imagen no se puede cargar, usar la por defecto
-            pokemonImage.onerror = function() {
+            pokemonImage.onerror = function () {
                 this.src = 'default_img.png';
             };
-            
-            // Agregar evento click para navegar al pokémon anterior
-            cardDiv.addEventListener('click', async () => {
-                console.log('pre');
-                
-                const prevPokemonId = currentPokemon.id - 1;
-                if (pokemonImage.src != 'default_image.png') {
-                    await searchPokemon(prevPokemonId);
-                }
-            });
-            
-            cardDiv.style.cursor = 'pointer';
         } else {
             pokemonImage.src = 'default_img.png';
         }
@@ -228,20 +211,21 @@ function buildPostCard() {
     let dataDiv = createDataDiv()
     let pokemonImage = createPokemonImage()
     pokemonImage.id = 'post_pokemon_image'
-    
+
     try {
         // Intentar cargar la imagen siguiente
         const currentImageUrl = currentPokemon.sprites.front_default;
-        const nextImageUrl = modifyImageUrl(currentImageUrl, 1);
-        
+        const nextImageUrl = getNextPokemonImage(currentImageUrl, 1);
+
         if (nextImageUrl) {
             pokemonImage.src = nextImageUrl;
-            
+
+
             // Si la imagen no se puede cargar, usar la por defecto
-            pokemonImage.onerror = function() {
+            pokemonImage.onerror = function () {
                 this.src = 'default_img.png';
             };
-            
+
             // Agregar evento click para navegar al pokémon siguiente
             cardDiv.addEventListener('click', async () => {
                 const nextPokemonId = currentPokemon.id + 1;
@@ -252,7 +236,7 @@ function buildPostCard() {
                     setData(currentPokemon);
                 }
             });
-            
+
             cardDiv.style.cursor = 'pointer';
         } else {
             pokemonImage.src = 'default_img.png';
@@ -362,7 +346,8 @@ function setAbilities(abilities) {
 function setImage(image) {
     let pokemonImage = document.getElementById('main_pokemon_image')
     if (image === null) {
-        pokemonImage.setAttribute('src', 'default_image.png')
+        pokemonImage.setAttribute('src', 'default_img.png')
+        return;
     }
     pokemonImage.setAttribute('src', image)
 }
@@ -491,7 +476,7 @@ document.getElementById('randomSearchBtn').addEventListener('click', async funct
 document.getElementById('searchBtn').addEventListener('click', async function () {
     const pokemonName = document.getElementById('pokemonInput').value.trim().toLowerCase();
     await searchPokemon(pokemonName)
-    
+
 });
 
 document.getElementById('pokemonInput').addEventListener('keypress', function (e) {
