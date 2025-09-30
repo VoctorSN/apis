@@ -1,56 +1,24 @@
+// ============================================
+// DOCUMENT MANAGER - Funciones para manipular el DOM
+// ============================================
 
-let currentPokemon = null;
-let isShowingFront = true;
-let isShiny = false;
+/**
+ * Construye toda la estructura de cartas de Pokemon
+ */
+function buildDocument() {
+    // Limpiar contenedor principal
+    let pokemonCardsDiv = document.getElementById('pokemon_cards')
+    pokemonCardsDiv.innerHTML = ''
 
-function getNextPokemonImage(imageUrl, increment = 1) {
-    if (!imageUrl) return null;
-
-    try {
-        // Extraer el número (ID) del final de la URL
-        const urlParts = imageUrl.split('/');
-        const filename = urlParts[urlParts.length - 1]; // "25.png"
-        const nameParts = filename.split('.'); // ["25", "png"]
-        const currentId = parseInt(nameParts[0]); // 25
-        const extension = nameParts[1]; // "png"
-
-        // Verificar que el ID sea válido
-        if (isNaN(currentId)) return null;
-
-        // Calcular nuevo ID
-        const newId = currentId + increment;
-
-        // Solo verificar que no sea menor que 1
-        if (newId < 1) return null;
-
-        // Reconstruir la URL
-        urlParts[urlParts.length - 1] = `${newId}.${extension}`;
-
-        return urlParts.join('/');
-    } catch (err) {
-        return null;
-    }
+    // Construir las tres cartas
+    buildPreCard()
+    buildMainCard()
+    buildPostCard()
 }
 
-///it also works with ID
-async function getPokemonWithName(pokemonName) {
-    try {
-        const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
-        const pokemon = await response.json();
-
-        isShowingFront = true;
-        isShiny = false;
-
-        return pokemon
-
-    } catch (err) {
-        console.log(err);
-        let input = document.getElementById("pokemonInput");
-        input.value = "No se encontro el pokemon";
-    }
-}
-
-// Funciones para crear elementos individuales
+/**
+ * Funciones para crear elementos DOM individuales
+ */
 function createCardDiv() {
     let cardDiv = document.createElement('div')
     cardDiv.className = 'card'
@@ -125,35 +93,11 @@ function createAudioControlsDiv() {
     return audioControlsDiv
 }
 
-// Funciones auxiliares para cargar imágenes
-function getPrePokemonImageUrl() {
-    if (!currentPokemon || !currentPokemon.sprites) return null;
-    const currentImageUrl = currentPokemon.sprites.front_default;
-    return getNextPokemonImage(currentImageUrl, -1);
-}
-
-function getPostPokemonImageUrl() {
-    if (!currentPokemon || !currentPokemon.sprites) return null;
-    const currentImageUrl = currentPokemon.sprites.front_default;
-    return getNextPokemonImage(currentImageUrl, 1);
-}
-
-function buildDocument() {
-    // Limpiar contenedor principal
-    let pokemonCardsDiv = document.getElementById('pokemon_cards')
-    pokemonCardsDiv.innerHTML = ''
-
-    // Construir las tres cartas
-    buildPreCard()
-    buildMainCard()
-    buildPostCard()
-}
-
+/**
+ * Construye la carta del Pokemon anterior
+ */
 function buildPreCard() {
-    // Obtener el contenedor principal
     let pokemonCardsDiv = document.getElementById('pokemon_cards')
-
-
 
     let cardDiv = createCardDiv()
     cardDiv.className += ' dimmed'
@@ -163,7 +107,6 @@ function buildPreCard() {
 
     // Agregar evento click para navegar al pokémon anterior
     cardDiv.addEventListener('click', async () => {
-
         const prevPokemonId = currentPokemon.id - 1;
         if (pokemonImage.src != 'default_image.png') {
             await searchPokemon(prevPokemonId);
@@ -179,8 +122,6 @@ function buildPreCard() {
 
         if (prevImageUrl) {
             pokemonImage.src = prevImageUrl;
-
-            // Si la imagen no se puede cargar, usar la por defecto
             pokemonImage.onerror = function () {
                 this.src = 'default_img.png';
             };
@@ -188,22 +129,18 @@ function buildPreCard() {
             pokemonImage.src = 'default_img.png';
         }
     } catch (e) {
-        // Cualquier error: usar imagen por defecto
         pokemonImage.src = 'default_img.png';
     }
 
-    // Ensamblar data div
     dataDiv.appendChild(pokemonImage)
-
-    // Ensamblar card
     cardDiv.appendChild(dataDiv)
-
-    // Agregar al contenedor principal
     pokemonCardsDiv.appendChild(cardDiv)
 }
 
+/**
+ * Construye la carta del Pokemon siguiente
+ */
 function buildPostCard() {
-    // Obtener el contenedor principal
     let pokemonCardsDiv = document.getElementById('pokemon_cards')
 
     let cardDiv = createCardDiv()
@@ -213,28 +150,18 @@ function buildPostCard() {
     pokemonImage.id = 'post_pokemon_image'
 
     try {
-        // Intentar cargar la imagen siguiente
         const currentImageUrl = currentPokemon.sprites.front_default;
         const nextImageUrl = getNextPokemonImage(currentImageUrl, 1);
 
         if (nextImageUrl) {
             pokemonImage.src = nextImageUrl;
-
-
-            // Si la imagen no se puede cargar, usar la por defecto
             pokemonImage.onerror = function () {
                 this.src = 'default_img.png';
             };
 
-            // Agregar evento click para navegar al pokémon siguiente
             cardDiv.addEventListener('click', async () => {
                 const nextPokemonId = currentPokemon.id + 1;
-                const nextPokemon = await getPokemonWithName(nextPokemonId);
-                if (nextPokemon) {
-                    currentPokemon = nextPokemon;
-                    buildDocument();
-                    setData(currentPokemon);
-                }
+                await searchPokemon(nextPokemonId);
             });
 
             cardDiv.style.cursor = 'pointer';
@@ -242,25 +169,20 @@ function buildPostCard() {
             pokemonImage.src = 'default_img.png';
         }
     } catch (e) {
-        // Cualquier error: usar imagen por defecto
         pokemonImage.src = 'default_img.png';
     }
 
-    // Ensamblar data div
     dataDiv.appendChild(pokemonImage)
-
-    // Ensamblar card
     cardDiv.appendChild(dataDiv)
-
-    // Agregar al contenedor principal
     pokemonCardsDiv.appendChild(cardDiv)
 }
 
+/**
+ * Construye la carta principal del Pokemon actual
+ */
 function buildMainCard() {
-    // Obtener el contenedor principal
     let pokemonCardsDiv = document.getElementById('pokemon_cards')
 
-    // Crear elementos usando las funciones
     let cardDiv = createCardDiv()
     let dataDiv = createDataDiv()
     let labelNameDiv = createLabelNameDiv()
@@ -273,49 +195,44 @@ function buildMainCard() {
     let abilitiesUl = createAbilitiesUl()
     let audioControlsDiv = createAudioControlsDiv()
 
-    // Ensamblar la estructura según el HTML objetivo:
-    // <div class="card">
-    //   <div id="data">
-    //     <div id="label_name"></div>
-    //     <img id="pokemon_image" />
-    //     <div id="buttons_div"></div>
-    //     <div class="info_lists">
-    //       <div class="stats">
-    //         <ul id="stats_list"></ul>
-    //       </div>
-    //       <div class="abilities">
-    //         <ul id="abilities_list"></ul>
-    //       </div>
-    //     </div>
-    //     <div id="audio_controls"></div>
-    //   </div>
-    // </div>
-
     // Ensamblar stats
     statsDiv.appendChild(statsUl)
-
+    
     // Ensamblar abilities
     abilitiesDiv.appendChild(abilitiesUl)
-
+    
     // Ensamblar info_lists
     infoListsDiv.appendChild(statsDiv)
     infoListsDiv.appendChild(abilitiesDiv)
-
+    
     // Ensamblar data div
     dataDiv.appendChild(labelNameDiv)
     dataDiv.appendChild(pokemonImage)
     dataDiv.appendChild(buttonsDiv)
     dataDiv.appendChild(infoListsDiv)
     dataDiv.appendChild(audioControlsDiv)
-
+    
     // Ensamblar card
     cardDiv.appendChild(dataDiv)
-
+    
     // Agregar al contenedor principal
     pokemonCardsDiv.appendChild(cardDiv)
-
 }
 
+/**
+ * Actualiza la información del Pokemon en la UI
+ */
+function setData(pokemon) {
+    setName(pokemon.name)
+    addButtons()
+    setImage(getCurrentImageUrl())
+    setStats(pokemon.stats)
+    setAbilities(pokemon.abilities)
+}
+
+/**
+ * Funciones para actualizar elementos específicos
+ */
 function setStats(stats) {
     let legendStats = document.createElement('legend')
     let statsList = document.getElementById('main_stats_list')
@@ -328,7 +245,6 @@ function setStats(stats) {
         statsList.appendChild(li)
     });
 }
-
 
 function setAbilities(abilities) {
     let abilitiesList = document.getElementById('main_abilities_list')
@@ -343,13 +259,13 @@ function setAbilities(abilities) {
     });
 }
 
-function setImage(image) {
+function setImage(imageUrl) {
     let pokemonImage = document.getElementById('main_pokemon_image')
-    if (image === null) {
+    if (imageUrl === null) {
         pokemonImage.setAttribute('src', 'default_img.png')
         return;
     }
-    pokemonImage.setAttribute('src', image)
+    pokemonImage.setAttribute('src', imageUrl)
 }
 
 function setAudio(audio) {
@@ -364,7 +280,6 @@ function setAudio(audio) {
     audioElement.id = "audioPlayer"
     fatherDiv.appendChild(audioElement)
     nameDiv.append(fatherDiv)
-
 }
 
 function setName(name) {
@@ -374,7 +289,16 @@ function setName(name) {
     labelName.textContent = capitalize(name)
     labelName.setAttribute('id', "name_label")
     nameDiv.appendChild(labelName)
+}
 
+/**
+ * Funciones para manejar botones
+ */
+function addButtons() {
+    let buttonDiv = document.getElementById('main_buttons_div')
+    buttonDiv.innerHTML = ''
+    addTurnButton()
+    addShinyButton()
 }
 
 function addTurnButton() {
@@ -383,7 +307,6 @@ function addTurnButton() {
     turnButton.setAttribute('id', "turn_button")
     turnButton.textContent = "🔄"
     buttonDiv.appendChild(turnButton)
-
     addActionsToTurnButton()
 }
 
@@ -393,7 +316,6 @@ function addShinyButton() {
     shinyButton.setAttribute('id', "shiny_button")
     shinyButton.textContent = "⭐"
     buttonDiv.appendChild(shinyButton)
-
     addActionsToShinyButton()
 }
 
@@ -405,22 +327,13 @@ function addActionsToShinyButton() {
     document.getElementById('shiny_button').addEventListener('click', turnShiny);
 }
 
+/**
+ * Funciones de acción para los botones
+ */
 function turnImage() {
     if (currentPokemon) {
         isShowingFront = !isShowingFront
         chargeImage()
-    }
-}
-
-function chargeImage() {
-    if (isShiny && isShowingFront) {
-        setImage(currentPokemon.sprites.front_shiny)
-    } else if (isShiny && !isShowingFront) {
-        setImage(currentPokemon.sprites.back_shiny)
-    } else if (isShowingFront) {
-        setImage(currentPokemon.sprites.front_default)
-    } else {
-        setImage(currentPokemon.sprites.back_default)
     }
 }
 
@@ -431,56 +344,14 @@ function turnShiny() {
     }
 }
 
-function addButtons() {
-    let buttonDiv = document.getElementById('main_buttons_div')
-    buttonDiv.innerHTML = ''
-    addTurnButton()
-    addShinyButton()
+function chargeImage() {
+    const imageUrl = getCurrentImageUrl();
+    setImage(imageUrl);
 }
 
-function setData(pokemon) {
-    setName(pokemon.name)
-    addButtons()
-    setImage(pokemon.sprites.front_default)
-    setStats(pokemon.stats)
-    setAbilities(pokemon.abilities)
-    setAudio(pokemon.cries.latest)
-
-}
+/**
+ * Funciones utilitarias
+ */
 function capitalize(text) {
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
-
-function getRandomPokemonId() {
-    const randomNum = Math.floor(Math.random() * 1302) + 1;
-    return randomNum <= 1025 ? randomNum : randomNum - 1025 + 10000
-}
-
-async function searchPokemon(pokemon) {
-    if (pokemon) {
-        currentPokemon = await getPokemonWithName(pokemon);
-
-        buildDocument();
-        setData(currentPokemon);
-    }
-}
-
-document.getElementById('randomSearchBtn').addEventListener('click', async function () {
-    const pokemonId = getRandomPokemonId();
-    if (pokemonId) {
-        document.getElementById('pokemonInput').value = pokemonId
-        document.getElementById('searchBtn').click();
-    }
-});
-
-document.getElementById('searchBtn').addEventListener('click', async function () {
-    const pokemonName = document.getElementById('pokemonInput').value.trim().toLowerCase();
-    await searchPokemon(pokemonName)
-
-});
-
-document.getElementById('pokemonInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        document.getElementById('searchBtn').click();
-    }
-});
