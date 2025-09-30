@@ -197,24 +197,24 @@ function buildMainCard() {
 
     // Ensamblar stats
     statsDiv.appendChild(statsUl)
-    
+
     // Ensamblar abilities
     abilitiesDiv.appendChild(abilitiesUl)
-    
+
     // Ensamblar info_lists
     infoListsDiv.appendChild(statsDiv)
     infoListsDiv.appendChild(abilitiesDiv)
-    
+
     // Ensamblar data div
     dataDiv.appendChild(labelNameDiv)
     dataDiv.appendChild(pokemonImage)
     dataDiv.appendChild(buttonsDiv)
     dataDiv.appendChild(infoListsDiv)
     dataDiv.appendChild(audioControlsDiv)
-    
+
     // Ensamblar card
     cardDiv.appendChild(dataDiv)
-    
+
     // Agregar al contenedor principal
     pokemonCardsDiv.appendChild(cardDiv)
 }
@@ -225,7 +225,7 @@ function buildMainCard() {
 function setData(pokemon) {
     setName(pokemon.name)
     addButtons()
-    setImage(getCurrentImageUrl())
+    chargeImage()
     setStats(pokemon.stats)
     setAbilities(pokemon.abilities)
 }
@@ -345,7 +345,10 @@ function turnShiny() {
 }
 
 function chargeImage() {
-    const imageUrl = getCurrentImageUrl();
+    let imageUrl = tryGetCurrentGif()
+    if (imageUrl === null) {
+        imageUrl = getCurrentImageUrl();
+    }
     setImage(imageUrl);
 }
 

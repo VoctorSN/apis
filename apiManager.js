@@ -27,21 +27,21 @@ async function searchPokemon(pokemonIdentifier) {
         // Resetear estados
         isShowingFront = true;
         isShiny = false;
-        
+
         // Obtener Pokemon de la API
         const pokemon = await getPokemonWithName(pokemonIdentifier);
         currentPokemon = pokemon;
-        
+
         // Actualizar la UI
         buildDocument();
         setData(currentPokemon);
-        
+
         // Actualizar el input con el nombre encontrado
         const input = document.getElementById("pokemonInput");
         if (input) {
             input.value = pokemon.name;
         }
-        
+
     } catch (err) {
         // Mostrar error en la UI
         const input = document.getElementById("pokemonInput");
@@ -95,10 +95,10 @@ function getRandomPokemonId() {
     // Rango 1: 1-1025 (1025 Pokemon)
     // Rango 2: 10001-10277 (277 Pokemon)
     // Total: 1302 Pokemon
-    
+
     const totalPokemon = 1025 + 277; // 1302 total
     const randomNum = Math.floor(Math.random() * totalPokemon) + 1;
-    
+
     if (randomNum <= 1025) {
         // Pokemon del rango 1-1025
         return randomNum;
@@ -115,7 +115,7 @@ function getRandomPokemonId() {
  */
 function getCurrentImageUrl() {
     if (!currentPokemon) return null;
-    
+
     if (isShiny && isShowingFront) {
         return currentPokemon.sprites.front_shiny;
     } else if (isShiny && !isShowingFront) {
@@ -124,6 +124,28 @@ function getCurrentImageUrl() {
         return currentPokemon.sprites.front_default;
     } else {
         return currentPokemon.sprites.back_default;
+    }
+}
+
+/**
+ * Obtiene la URL de la imagen actual según el estado (front/back, normal/shiny)
+ * @returns {string} - URL de la imagen actual
+ */
+function tryGetCurrentGif() {
+    if (!currentPokemon) return null;
+
+    try {
+        if (isShiny && isShowingFront) {
+            return currentPokemon.sprites.other.showdown.front_shiny;
+        } else if (isShiny && !isShowingFront) {
+            return currentPokemon.sprites.other.showdown.back_shiny;
+        } else if (isShowingFront) {
+            return currentPokemon.sprites.other.showdown.front_default;
+        } else {
+            return currentPokemon.sprites.other.showdown.back_default;
+        }
+    } catch (e) {
+        return;
     }
 }
 
