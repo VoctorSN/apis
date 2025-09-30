@@ -40,7 +40,7 @@ document.getElementById('randomSearchBtn').addEventListener('click', function ()
 // ============================================
 
 // Cargar Pokemon inicial al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Cargar Pikachu por defecto
     searchPokemon(25);
 });

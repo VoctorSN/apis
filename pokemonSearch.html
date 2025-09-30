@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Poke Voctor - Búsqueda</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="menu-closed">
+    <!-- Botón para toggle del menú -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <!-- Menú lateral -->
+
+
+    <div id="header">
+
+        <div class="sidebar_div">
+            <nav class="sidebar closed" id="sidebar">
+                <div class="sidebar-header">
+                </div>
+                <ul class="sidebar-nav">
+                    <li><a href="pokemonSearch.html" class="active"><i>🔍</i>Búsqueda Pokémon</a></li>
+                    <li><a href="typesDiccionary.html"><i>📚</i>Diccionario de Tipos</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <h1 class="tituloPrincipal">Búsqueda de Pokémon</h1>
+        <div class="search_div">
+            <button id="randomSearchBtn">🎲</button>
+            <div class="input-container">
+                <input id="pokemonInput" type="text" placeholder="Introduce el nombre del Pokemon" />
+                <span class="input-icon" id="searchBtn">🔍</span>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div id="pokemon_cards">
+            <!--             default display for when no search introducced -->
+            <div class="card">
+                <div id="data">
+                    <div id="label_name"></div>
+                    <img class="pokemon_image" id="main_pokemon_image" src="default_img.png" />
+                    <div id="buttons_div"></div>
+                    <div class="info_lists">
+                        <div class="stats">
+                            <ul id="stats_list"></ul>
+                        </div>
+                        <div class="abilities">
+                            <ul id="abilities_list"></ul>
+                        </div>
+                    </div>
+                    <div id="audio_controls"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- Scripts en orden de dependencias -->
+<script src="apiManager.js"></script>
+<script src="documentManager.js"></script>
+<script src="main.js"></script>
+
+<!-- Script para el menú lateral -->
+<script>
+    // Toggle del menú lateral
+    document.getElementById('menuToggle').addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        const body = document.body;
+
+        sidebar.classList.toggle('closed');
+        body.classList.toggle('menu-closed');
+    });
+
+    // Cerrar menú al hacer clic en un enlace (opcional)
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+        link.addEventListener('click', function () {
+            // En pantallas móviles, cerrar el menú automáticamente
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.add('closed');
+                document.body.classList.add('menu-closed');
+            }
+        });
+    });
+</script>
+
+</html>

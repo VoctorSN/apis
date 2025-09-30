@@ -1,7 +1,6 @@
 // ============================================
 // API MANAGER - Funciones para comunicarse con la PokeAPI
 // ============================================
-
 /**
  * Obtiene un Pokémon por nombre o ID
  * @param {string|number} pokemonName - Nombre o ID del Pokémon
@@ -15,6 +14,17 @@ async function getPokemonWithName(pokemonName) {
     } catch (err) {
         console.log("Error al obtener Pokemon:", err);
         throw new Error("No se encontró el Pokémon");
+    }
+}
+
+async function getTypes() {
+    try {
+        const response = await fetch("https://pokeapi.co/api/v2/type?limit=50&offset=0");
+        const types = await response.json();
+        return types;
+    } catch (err) {
+        console.log("Error al obtener los types:", err);
+        throw new Error("No se encontraron los types");
     }
 }
 

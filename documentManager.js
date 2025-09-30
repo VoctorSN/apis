@@ -285,7 +285,7 @@ function setAudio(audio) {
 function setName(name) {
     let nameDiv = document.getElementById('main_label_name')
     nameDiv.innerHTML = ''
-    let labelName = document.createElement('h2')
+    let labelName = document.createElement('h1')
     labelName.textContent = capitalize(name)
     labelName.setAttribute('id', "name_label")
     nameDiv.appendChild(labelName)

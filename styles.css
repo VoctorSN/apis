@@ -10,12 +10,18 @@
     min-width: 350px;
     /* Elementos de arriba a abajo */
 }
+
 .dimmed {
     filter: saturate(0.3) brightness(0.7);
     /* Removido pointer-events: none para permitir clics */
 }
 
-#header{
+.sidebar_div {
+    flex: 1;
+
+}
+
+#header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -44,7 +50,7 @@
     margin: 5%;
     width: 300px;
     height: 400px;
-    
+
 }
 
 legend {
@@ -105,7 +111,7 @@ legend {
 }
 
 #turn_button:hover,
-#shiny_button:hover{
+#shiny_button:hover {
     transform: scale(1.1);
     background-color: rgb(200, 200, 100);
     margin: 2px;
@@ -135,19 +141,16 @@ button {
 
 }
 
-h2 {
-    background-color: rgb(235, 235, 10);
-    border-radius: 5%;
+h1 {
+    color: rgb(229, 229, 128);
     display: inline-block;
-    padding: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
     width: auto;
-    margin: 0;
     text-align: center;
+    margin: 10px;
 }
 
 .tituloPrincipal {
+    flex: 1;
     margin: 0px;
     text-align: center;
     padding: 30px;
@@ -157,8 +160,103 @@ h2 {
 body {
     margin: 0px;
     background-color: rgb(229, 229, 128);
-
+    margin-left: 250px;
+    /* Espacio para el menú lateral */
+    transition: margin-left 0.3s ease;
 }
+
+/* Menú lateral */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.sidebar.closed {
+    transform: translateX(-250px);
+}
+
+.sidebar-header {
+    padding: 0 20px 56px 20px;
+    margin-bottom: 20px;
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    color: #ecf0f1;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin: 0;
+}
+
+.sidebar-nav a {
+    display: block;
+    padding: 15px 20px;
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-nav a:hover {
+    background-color: rgb(229, 229, 128);
+    color: black;
+}
+
+.sidebar-nav a.active {
+    background-color: rgb(236, 236, 109);
+    color: black;
+    border-left-color: black;
+}
+
+.sidebar-nav a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Botón para toggle del menú */
+.menu-toggle {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background-color: rgb(229, 229, 128);
+}
+
+/* Ajustes cuando el menú está cerrado */
+body.menu-closed {
+    margin-left: 0;
+}
+
 
 .body {
     margin: 18px;
@@ -168,7 +266,8 @@ body {
 
 .search_div {
     display: flex;
-    justify-content: center;
+    flex: 1;
+    justify-content: end;
     align-items: center;
     flex-direction: row;
     gap: 10px;
@@ -181,9 +280,12 @@ body {
 }
 
 #pokemonInput {
-    height: 30px;
+    font-size: 18px;
+    padding-left: 8px;
+    height: 40px;
     border-radius: 10px;
-    padding-right: 35px; /* Espacio para el icono */
+    padding-right: 35px;
+    /* Espacio para el icono */
     min-width: 200px;
 }
 
@@ -196,15 +298,49 @@ body {
     right: 5px;
     top: 50%;
     transform: translateY(-50%);
-    pointer-events: auto; /* Cambiar a auto para permitir clics */
+    pointer-events: auto;
+    /* Cambiar a auto para permitir clics */
     color: #666;
     font-size: 16px;
-    padding: 5px; /* Área de click más grande */
+    padding: 5px;
+    /* Área de click más grande */
     border-radius: 3px;
     cursor: pointer;
 }
 
-legend{
+legend {
     font-weight: bold;
     margin-bottom: 5px;
+}
+
+.centered-info {
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.type-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    width: 790px;
+}
+
+.type-card{
+    border: white 3px solid;
+    border-radius: 15%;
+    padding: 20px 0px;
+    background-color: black;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.type-card h1{
+    flex: 1 0 auto;
+    max-height: 50px;
+    padding-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-bottom: 2px solid rgb(229, 229, 128);
 }

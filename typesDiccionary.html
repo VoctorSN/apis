@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Poke Voctor - Diccionario de Tipos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="menu-closed">
+    <!-- Botón para toggle del menú -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <!-- Menú lateral -->
+
+
+    <div id="header">
+
+        <div class="sidebar_div">
+            <nav class="sidebar closed" id="sidebar">
+                <div class="sidebar-header">
+                </div>
+                <ul class="sidebar-nav">
+                    <li><a href="pokemonSearch.html"><i>🔍</i>Búsqueda Pokémon</a></li>
+                    <li><a href="typesDiccionary.html" class="active"><i>📚</i>Diccionario de Tipos</a></li>
+                </ul>
+            </nav>
+        </div>
+        <h1 class="tituloPrincipal">Diccionario de Tipos</h1>
+        <div style="flex:1;"></div>
+
+    </div>
+
+    <div class="centered-info">
+        <div class="type-cards" id="types-cards">
+            <div class="type-card">
+                <h1>Electrico</h1>
+            </div>
+            <div class="type-card">
+                <h1>Piedra</h1>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+<!-- Scripts en orden de dependencias -->
+<script src="apiManager.js"></script>
+<script src="documentManager.js"></script>
+<script src="main.js"></script>
+
+<!-- Script para el menú lateral -->
+<script>
+    // Toggle del menú lateral
+    document.getElementById('menuToggle').addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        const body = document.body;
+
+        sidebar.classList.toggle('closed');
+        body.classList.toggle('menu-closed');
+    });
+
+    // Cerrar menú al hacer clic en un enlace (opcional)
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+        link.addEventListener('click', function () {
+            // En pantallas móviles, cerrar el menú automáticamente
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.add('closed');
+                document.body.classList.add('menu-closed');
+            }
+        });
+    });
+</script>
+
+</html>
