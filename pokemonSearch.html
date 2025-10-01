@@ -61,29 +61,7 @@
 <!-- Scripts en orden de dependencias -->
 <script src="apiManager.js"></script>
 <script src="documentManager.js"></script>
-<script src="main.js"></script>
-
-<!-- Script para el menú lateral -->
-<script>
-    // Toggle del menú lateral
-    document.getElementById('menuToggle').addEventListener('click', function () {
-        const sidebar = document.getElementById('sidebar');
-        const body = document.body;
-
-        sidebar.classList.toggle('closed');
-        body.classList.toggle('menu-closed');
-    });
-
-    // Cerrar menú al hacer clic en un enlace (opcional)
-    document.querySelectorAll('.sidebar-nav a').forEach(link => {
-        link.addEventListener('click', function () {
-            // En pantallas móviles, cerrar el menú automáticamente
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.add('closed');
-                document.body.classList.add('menu-closed');
-            }
-        });
-    });
-</script>
+<script src="searchPokemonListeners.js"></script>
+<script src="sidebarEventManager.js"></script>
 
 </html>
