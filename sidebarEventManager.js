@@ -8,8 +8,6 @@ document.getElementById('menuToggle').addEventListener('mouseenter', function ()
 });
 
 function setSideBar() {
-    console.log("setting sidebar to " + sideBarIsOpen);
-
     const sidebar = document.getElementById('sidebar');
     const body = document.body;
     if (!sideBarIsOpen) {

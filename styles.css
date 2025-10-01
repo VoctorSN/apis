@@ -125,6 +125,10 @@ legend {
     margin: 0px;
 }
 
+.oculta{
+    display: none;
+}
+
 button {
     /* Mostrar que es clickeable */
     cursor: pointer;
@@ -139,6 +143,18 @@ button {
     font-size: 28px;
     /* Aumentado de 20px a 28px */
 
+}
+
+#btnChargeMore{
+    border: white 3px solid;
+    border-radius: 15px;
+    font-size: 18px;
+    padding: 20px;
+    background-color: black;
+    color: rgb(229, 229, 128);
+    height: fit-content;
+    width: fit-content;
+    margin: 30px;
 }
 
 h1 {
@@ -316,7 +332,9 @@ legend {
 .centered-info {
     margin: 50px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .type-cards {

@@ -17,17 +17,6 @@ async function getPokemonWithName(pokemonName) {
     }
 }
 
-async function getTypes() {
-    try {
-        const response = await fetch("https://pokeapi.co/api/v2/type?limit=50&offset=0");
-        const types = await response.json();
-        return types;
-    } catch (err) {
-        console.log("Error al obtener los types:", err);
-        throw new Error("No se encontraron los types");
-    }
-}
-
 /**
  * Busca un Pokémon y actualiza la UI
  * @param {string|number} pokemonIdentifier - Nombre o ID del Pokémon
