@@ -125,8 +125,8 @@ legend {
     margin: 0px;
 }
 
-.oculta{
-    display: none !important; 
+.oculta {
+    display: none !important;
 }
 
 button {
@@ -145,7 +145,7 @@ button {
 
 }
 
-#btnChargeMore{
+#btnChargeMore {
     border: white 3px solid;
     border-radius: 15px;
     font-size: 18px;
@@ -295,6 +295,18 @@ body.menu-closed {
     display: inline-block;
 }
 
+.icons {
+    justify-content: center;
+    display: flex;
+    gap: 10px;
+    border-top: 2px solid rgb(229, 229, 128);
+    padding: 10px;
+}
+
+.iconImage{
+    
+}
+
 #pokemonInput {
     font-size: 18px;
     padding-left: 8px;
@@ -341,24 +353,30 @@ legend {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
-    width: 790px;
+    width: 1050px;
 }
 
-.type-card{
+.type-card {
     border: white 3px solid;
     border-radius: 15%;
     padding: 20px 0px;
     background-color: black;
     height: 400px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
 }
 
-.type-card h1{
+.type-card h1 {
     flex: 1 0 auto;
     max-height: 50px;
+    text-transform: capitalize;
     padding-bottom: 10px;
     margin-left: 0px;
     margin-right: 0px;
     border-bottom: 2px solid rgb(229, 229, 128);
+}
+
+.damageDiv {
+    flex: 1
 }
