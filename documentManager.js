@@ -43,7 +43,7 @@ function createPokemonImage() {
     let pokemonImage = document.createElement('img')
     pokemonImage.className = 'pokemon_image'
     pokemonImage.id = 'main_pokemon_image'
-    pokemonImage.src = 'default_img.png'
+    pokemonImage.src = 'img/default_img.png'
     return pokemonImage
 }
 
@@ -123,13 +123,13 @@ function buildPreCard() {
         if (prevImageUrl) {
             pokemonImage.src = prevImageUrl;
             pokemonImage.onerror = function () {
-                this.src = 'default_img.png';
+                this.src = 'img/default_img.png';
             };
         } else {
-            pokemonImage.src = 'default_img.png';
+            pokemonImage.src = 'img/default_img.png';
         }
     } catch (e) {
-        pokemonImage.src = 'default_img.png';
+        pokemonImage.src = 'img/default_img.png';
     }
 
     dataDiv.appendChild(pokemonImage)
@@ -156,7 +156,7 @@ function buildPostCard() {
         if (nextImageUrl) {
             pokemonImage.src = nextImageUrl;
             pokemonImage.onerror = function () {
-                this.src = 'default_img.png';
+                this.src = 'img/default_img.png';
             };
 
             cardDiv.addEventListener('click', async () => {
@@ -166,10 +166,10 @@ function buildPostCard() {
 
             cardDiv.style.cursor = 'pointer';
         } else {
-            pokemonImage.src = 'default_img.png';
+            pokemonImage.src = 'img/default_img.png';
         }
     } catch (e) {
-        pokemonImage.src = 'default_img.png';
+        pokemonImage.src = 'img/default_img.png';
     }
 
     dataDiv.appendChild(pokemonImage)
@@ -228,6 +228,7 @@ function setData(pokemon) {
     chargeImage()
     setStats(pokemon.stats)
     setAbilities(pokemon.abilities)
+    setAudio(pokemon.cries.latest)
 }
 
 /**
@@ -262,13 +263,14 @@ function setAbilities(abilities) {
 function setImage(imageUrl) {
     let pokemonImage = document.getElementById('main_pokemon_image')
     if (imageUrl === null) {
-        pokemonImage.setAttribute('src', 'default_img.png')
+        pokemonImage.setAttribute('src', 'img/default_img.png')
         return;
     }
     pokemonImage.setAttribute('src', imageUrl)
 }
 
 function setAudio(audio) {
+    
     let nameDiv = document.getElementById('main_audio_controls')
     let fatherDiv = document.createElement('div')
     let audioElement = document.createElement('audio')
