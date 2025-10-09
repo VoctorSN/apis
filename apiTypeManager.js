@@ -5,6 +5,7 @@ const ICONSPERCARD = 5
 const btnChargeMore = document.getElementById('btnChargeMore')
 var currentType = undefined
 
+
 async function getFourMoreTypes() {
 
     try {
@@ -76,22 +77,27 @@ function getDamageMultipliers() {
     let damageMultipliers = []
     for (let typeMultiplier in currentType.damage_relations) {
 
-        let doubleDamageFrom = document.createElement('div')
-        let doubleDamageFromUl = document.createElement('ul')
-        let doubleDamageFromLegend = document.createElement('legend')
+        let multiplierDiv = document.createElement('div')
+        let multiplierTitle = document.createElement('h3')
+        let pContainer = document.createElement('div')
 
-        doubleDamageFromLegend.textContent = typeMultiplier
-        doubleDamageFromUl.appendChild(doubleDamageFromLegend)
 
         for (let damageMultiplier of currentType.damage_relations[typeMultiplier]) {
-            let doubleDamageFromLi = document.createElement('li')
-            doubleDamageFromLi.innerText = damageMultiplier.name
-            doubleDamageFromUl.appendChild(doubleDamageFromLi)
+            let multiplierP = document.createElement('p')
+
+            multiplierP.innerText = damageMultiplier.name
+            multiplierP.classList.add('type-badge', `type-${damageMultiplier.name}`);
+
+            pContainer.appendChild(multiplierP)
         }
 
-        doubleDamageFrom.appendChild(doubleDamageFromUl)
+        pContainer.classList.add('badgesDiv')
+        multiplierDiv.classList.add('centered')
+        multiplierDiv.appendChild(multiplierTitle)
+        multiplierDiv.appendChild(pContainer)
+        multiplierTitle.textContent = typeMultiplier.replaceAll('_',' ')
 
-        damageMultipliers.push(doubleDamageFrom)
+        damageMultipliers.push(multiplierDiv)
     }
 
     return damageMultipliers
