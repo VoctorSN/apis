@@ -2,6 +2,8 @@ var types = [];
 var iconTypes = new Map();
 var currentId = 1
 const ICONSPERCARD = 5
+const btnChargeMore = document.getElementById('btnChargeMore')
+var currentType = undefined
 
 async function getFourMoreTypes() {
 
@@ -9,7 +11,6 @@ async function getFourMoreTypes() {
         for (let i = 0; i < 4; i++) {
 
             types.push(await getType(currentId));
-            console.log(currentId);
             currentId += 1
             if (currentId === 20) {
                 currentId = 10001
@@ -42,9 +43,6 @@ function getFirstNotNullSprites(sprites) {
             if (sprite === null || sprite === undefined) {
                 continue
             }
-            if (sprite.includes('…')) {
-                continue
-            }
             urls.push(sprite);
 
 
@@ -61,61 +59,93 @@ function eliminarBoton() {
     document.getElementById('btnChargeMore').classList.add('oculta')
 }
 
-function populateDamageDiv(damageDiv) {
-    let doubleDamageFrom = document.createElement('div')
-    let doubleDamageTo = document.createElement('div')
-    let halfDamageFrom = document.createElement('div')
-    let halfDamageTo = document.createElement('div')
-    let noDamageFrom = document.createElement('div')
-    let noDamageTo = document.createElement('div')
-
-
-
+function appendFourIcons() {
+    let icons = []
+    iconSources = getFirstNotNullSprites(currentType.sprites)
+    iconTypes.set(currentType.id, iconSources)
+    for (let i = 0; i < iconSources.length; i++) {
+        let icon = document.createElement('img');
+        icon.setAttribute('src', iconSources[i]);
+        icon.classList.add('iconImage');
+        icons.push(icon);
+    }
+    return icons
 }
 
-async function populateCards() {
+function getDamageMultipliers() {
+    let damageMultipliers = []
+    for (let typeMultiplier in currentType.damage_relations) {
+
+        let doubleDamageFrom = document.createElement('div')
+        let doubleDamageFromUl = document.createElement('ul')
+        let doubleDamageFromLegend = document.createElement('legend')
+
+        doubleDamageFromLegend.textContent = typeMultiplier
+        doubleDamageFromUl.appendChild(doubleDamageFromLegend)
+
+        for (let damageMultiplier of currentType.damage_relations[typeMultiplier]) {
+            let doubleDamageFromLi = document.createElement('li')
+            doubleDamageFromLi.innerText = damageMultiplier.name
+            doubleDamageFromUl.appendChild(doubleDamageFromLi)
+        }
+
+        doubleDamageFrom.appendChild(doubleDamageFromUl)
+
+        damageMultipliers.push(doubleDamageFrom)
+    }
+
+    return damageMultipliers
+}
+
+
+async function populateFourMoreCards() {
     await getFourMoreTypes()
     let divTypeCards = document.getElementById('types-cards')
-    divTypeCards.innerHTML = ''
 
-    for (let type of types) {
+    for (let type of types.slice(-4)) {
+
+        currentType = type
 
         let card = document.createElement('div')
         let title = document.createElement('h1')
         let icons = document.createElement('div')
         let damageDiv = document.createElement('div')
+        let spacer = document.createElement('div')
 
-        populateDamageDiv(damageDiv)
+        damageDiv.classList.add('info_lists')
 
-
-        iconSources = getFirstNotNullSprites(type.sprites)
-        iconTypes.set(type.id,iconSources)
-
-        for (let i = 0; i < iconSources.length; i++) {
-            let icon = document.createElement('img')
-            icon.setAttribute('src', iconSources[i])
-            icon.classList.add('iconImage')
+        for (let damageMultiplier of getDamageMultipliers()) {
+            damageDiv.appendChild(damageMultiplier)
+        }
+        
+        for (let icon of appendFourIcons()) {
             icons.appendChild(icon)
         }
+
 
         card.classList.add('type-card')
         icons.classList.add('icons')
         damageDiv.classList.add('damageDiv')
+        spacer.classList.add('spacer')
 
-        title.textContent = type.name
-        
+        title.textContent = currentType.name
+
         card.appendChild(title)
         card.appendChild(damageDiv)
+        card.appendChild(spacer)
         card.appendChild(icons)
         divTypeCards.appendChild(card)
     }
+
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    populateCards();
+    populateFourMoreCards();
 });
 
 
-document.getElementById('btnChargeMore').addEventListener('click', function () {
-    populateCards();
+btnChargeMore.addEventListener('click', async function () {
+    btnChargeMore.innerText = 'Cargando...'
+    await populateFourMoreCards();
+    btnChargeMore.innerText = 'Cargar más'
 })
