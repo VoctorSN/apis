@@ -5,7 +5,8 @@
     <title>Poke Voctor - Búsqueda</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Favicon con emoji de Pokémon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 </head>
 
 <body class="menu-closed">
@@ -43,8 +44,10 @@
             <div class="card">
                 <div id="data">
                     <div id="label_name"></div>
-                    <img class="pokemon_image" id="main_pokemon_image" src="img/default_img.png" />
-                    <div id="buttons_div"></div>
+                    <div id="image_container">
+                        <img class="pokemon_image" id="main_pokemon_image" src="img/default_img.png" />
+                        <div id="buttons_div"></div>
+                    </div>
                     <div class="info_lists">
                         <div class="stats">
                             <ul id="stats_list"></ul>

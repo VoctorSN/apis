@@ -60,6 +60,18 @@ function createInfoListsDiv() {
     return infoDiv
 }
 
+function createImageContainer() {
+    let imageContainer = document.createElement('div')
+    let pokemonImage = createPokemonImage()
+    let buttonsDiv = createButtonsDiv()
+    imageContainer.id = 'image_container'
+    imageContainer.appendChild(pokemonImage)
+    imageContainer.appendChild(buttonsDiv)
+    return imageContainer
+}
+
+
+
 function createStatsDiv() {
     let statsDiv = document.createElement('div')
     statsDiv.className = 'stats'
@@ -186,8 +198,7 @@ function buildMainCard() {
     let cardDiv = createCardDiv()
     let dataDiv = createDataDiv()
     let labelNameDiv = createLabelNameDiv()
-    let pokemonImage = createPokemonImage()
-    let buttonsDiv = createButtonsDiv()
+    let imageContainer = createImageContainer()
     let infoListsDiv = createInfoListsDiv()
     let statsDiv = createStatsDiv()
     let statsUl = createStatsUl()
@@ -207,8 +218,7 @@ function buildMainCard() {
 
     // Ensamblar data div
     dataDiv.appendChild(labelNameDiv)
-    dataDiv.appendChild(pokemonImage)
-    dataDiv.appendChild(buttonsDiv)
+    dataDiv.appendChild(imageContainer)
     dataDiv.appendChild(infoListsDiv)
     dataDiv.appendChild(audioControlsDiv)
 

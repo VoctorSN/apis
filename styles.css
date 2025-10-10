@@ -8,6 +8,7 @@
     border-style: solid;
     border-radius: 5%;
     min-width: 350px;
+    z-index: 1;
     /* Elementos de arriba a abajo */
 }
 
@@ -25,7 +26,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: black;
+    background-color: rgb(182, 182, 8);
+    background: linear-gradient(to bottom,
+            rgb(182, 182, 8) 0%,
+            rgb(182, 182, 8) 80%,
+            rgb(143, 143, 8) 100%);
 }
 
 #pokemon_cards {
@@ -47,8 +52,8 @@
 }
 
 .pokemon_image {
-    margin: 5%;
-    width: 300px;
+    margin: 15px 0px 15px 0px;
+    width: 360px;
     height: 400px;
 
 }
@@ -64,7 +69,7 @@
 }
 
 .info_lists>* {
-    color: rgb(229, 229, 128);
+    color: white;
 }
 
 .data {
@@ -100,7 +105,7 @@
     justify-content: center;
     line-height: 1;
     padding: 0;
-    border: 2px solid black;
+    background-color: gray;
     border-radius: 8px;
     text-align: center;
     vertical-align: middle;
@@ -110,15 +115,22 @@
 #turn_button:hover,
 #shiny_button:hover {
     transform: scale(1.1);
-    background-color: rgb(200, 200, 100);
+    background-color: white;
     margin: 2px;
+}
+
+#image_container {
+    margin: 20px;
+    background-color: lightgray;
+    background: radial-gradient(grey 5%,
+            lightgray 15%,
+            black 80%);
 }
 
 #randomSearchBtn {
     width: 40px;
     height: 40px;
     font-size: 20px;
-    background-color: black;
     margin: 0px;
 }
 
@@ -130,7 +142,7 @@ button {
     /* Mostrar que es clickeable */
     cursor: pointer;
     display: inline-block;
-    background-color: rgb(229, 229, 128);
+    background-color: rgb(182, 182, 8);
     border-radius: 15%;
     width: 40px;
     transition: all 0.2s ease;
@@ -155,7 +167,7 @@ button {
 }
 
 h1 {
-    color: rgb(229, 229, 128);
+    color: white;
     display: inline-block;
     width: auto;
     text-align: center;
@@ -167,15 +179,98 @@ h1 {
     margin: 0px;
     text-align: center;
     padding: 30px;
-    color: rgb(229, 229, 128);
+    color: white;
 }
 
 body {
     margin: 0px;
-    background-color: rgb(229, 229, 128);
+    /* Fondo SVG animado y pequeño */
+    background: linear-gradient(to top,
+            rgb(182, 182, 8) 0%,
+            rgb(143,
+                143,
+                8) 80%,
+            rgb(143, 143, 8) 100%);
     margin-left: 250px;
+    height: 100vh;
     /* Espacio para el menú lateral */
     transition: margin-left 0.3s ease;
+}
+
+body::before {
+    opacity: 0.7;
+    animation: move-spin-bg 24s linear infinite;
+    /* Siempre detrás del contenido */
+}
+body::after, body::before{
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: url('background.svg') no-repeat center center;
+    background-size: 600px 400px;
+    transform-origin: 50% 50%;
+
+}
+body::after {
+    opacity: 0.5;
+    animation: move-spin-bg-opposite 24s linear infinite;
+}
+
+@keyframes move-spin-bg {
+    0% {
+        transform: translate(-40vw, -20vh) rotate(0deg) scale(1);
+    }
+
+    20% {
+        transform: translate(40vw, -20vh) rotate(72deg) scale(1.05);
+    }
+
+    40% {
+        transform: translate(40vw, 30vh) rotate(144deg) scale(1.1);
+    }
+
+    60% {
+        transform: translate(-40vw, 30vh) rotate(216deg) scale(1.05);
+    }
+
+    80% {
+        transform: translate(-40vw, -20vh) rotate(288deg) scale(1);
+    }
+
+    100% {
+        transform: translate(-40vw, -20vh) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes move-spin-bg-opposite {
+    0% {
+        transform: translate(40vw, 30vh) rotate(180deg) scale(1.1);
+    }
+
+    20% {
+        transform: translate(-40vw, 30vh) rotate(252deg) scale(1.05);
+    }
+
+    40% {
+        transform: translate(-40vw, -20vh) rotate(324deg) scale(1);
+    }
+
+    60% {
+        transform: translate(40vw, -20vh) rotate(36deg) scale(1.05);
+    }
+
+    80% {
+        transform: translate(40vw, 30vh) rotate(108deg) scale(1.1);
+    }
+
+    100% {
+        transform: translate(40vw, 30vh) rotate(180deg) scale(1.1);
+    }
 }
 
 /* Menú lateral */
@@ -185,8 +280,7 @@ body {
     top: 0;
     width: 250px;
     height: 100vh;
-    background-color: black;
-    color: white;
+    background-color: rgb(182, 182, 8);
     padding: 20px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -194,19 +288,12 @@ body {
 }
 
 .sidebar.closed {
-    transform: translateX(-250px);
+    transform: translateX(-500px);
 }
 
 .sidebar-header {
     padding: 0 20px 56px 20px;
     margin-bottom: 20px;
-}
-
-.sidebar-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0;
-    color: #ecf0f1;
 }
 
 .sidebar-nav {
@@ -222,21 +309,22 @@ body {
 .sidebar-nav a {
     display: block;
     padding: 15px 20px;
-    color: #bdc3c7;
+    color: white;
     text-decoration: none;
     transition: all 0.3s ease;
     border-left: 3px solid transparent;
 }
 
-.sidebar-nav a:hover {
-    background-color: rgb(229, 229, 128);
-    color: black;
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+    box-shadow:
+        15px 0 15px rgba(0, 0, 0, .4),
+        inset 0 0 0 1000px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
 }
 
 .sidebar-nav a.active {
-    background-color: rgb(236, 236, 109);
-    color: black;
-    border-left-color: black;
+    border-left-color: white;
 }
 
 .sidebar-nav a i {
@@ -250,7 +338,6 @@ body {
     position: fixed;
     top: 30px;
     left: 30px;
-    background-color: black;
     color: white;
     border: none;
     padding: 10px 12px;
@@ -262,7 +349,10 @@ body {
 }
 
 .menu-toggle:hover {
-    background-color: rgb(229, 229, 128);
+    box-shadow:
+        15px 0 15px rgba(0, 0, 0, .4),
+        inset 0 0 0 1000px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
 }
 
 /* Ajustes cuando el menú está cerrado */
@@ -281,6 +371,7 @@ body.menu-closed {
     display: flex;
     flex: 1;
     justify-content: end;
+    margin-right: 20px;
     align-items: center;
     flex-direction: row;
     gap: 10px;
@@ -298,10 +389,6 @@ body.menu-closed {
     gap: 10px;
     border-top: 2px solid rgb(229, 229, 128);
     padding: 10px;
-}
-
-.iconImage{
-    
 }
 
 #pokemonInput {
@@ -342,7 +429,7 @@ body.menu-closed {
     flex-direction: column;
 }
 
-.centered{
+.centered {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -382,7 +469,7 @@ body.menu-closed {
     grid-template-columns: 1fr 1fr;
 }
 
-.badgesDiv{
+.badgesDiv {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -390,11 +477,11 @@ body.menu-closed {
 }
 
 
-.spacer{
-    flex:1;
+.spacer {
+    flex: 1;
 }
 
-.damageDiv * h3{
+.damageDiv * h3 {
     text-transform: uppercase;
     color: white;
     display: flex;

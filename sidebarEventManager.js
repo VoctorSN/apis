@@ -2,7 +2,7 @@
 let sideBarIsOpen = false;
 
 // Toggle del menú lateral
-document.getElementById('menuToggle').addEventListener('mouseenter', function () {
+document.getElementById('menuToggle').addEventListener('click', function () {
     sideBarIsOpen = !sideBarIsOpen
     setSideBar()
 });
