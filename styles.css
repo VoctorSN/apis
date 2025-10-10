@@ -185,12 +185,21 @@ h1 {
 body {
     margin: 0px;
     /* Fondo SVG animado y pequeño */
-    background: linear-gradient(to top,
-            rgb(182, 182, 8) 0%,
+
+    background: linear-gradient(to bottom,
             rgb(143,
                 143,
-                8) 80%,
-            rgb(143, 143, 8) 100%);
+                8) 0%,
+            rgb(182,
+                182,
+                8) 45%,
+            rgb(182,
+                182,
+                8) 55%,
+            rgb(143,
+                143,
+                8) 100%);
+
     margin-left: 250px;
     height: 100vh;
     /* Espacio para el menú lateral */
@@ -202,7 +211,9 @@ body::before {
     animation: move-spin-bg 24s linear infinite;
     /* Siempre detrás del contenido */
 }
-body::after, body::before{
+
+body::after,
+body::before {
     content: "";
     position: fixed;
     top: 0;
@@ -211,11 +222,12 @@ body::after, body::before{
     bottom: 0;
     z-index: -1;
     pointer-events: none;
-    background: url('background.svg') no-repeat center center;
+    background: url('img/background.svg') no-repeat center center;
     background-size: 600px 400px;
     transform-origin: 50% 50%;
 
 }
+
 body::after {
     opacity: 0.5;
     animation: move-spin-bg-opposite 24s linear infinite;
@@ -448,7 +460,7 @@ body.menu-closed {
     border-radius: 15%;
     padding: 20px 0px;
     background-color: black;
-    height: 600px;
+    height: 400px;
     max-width: 700px;
     display: flex;
     flex-direction: column;
@@ -467,6 +479,9 @@ body.menu-closed {
 .damageDiv {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .badgesDiv {

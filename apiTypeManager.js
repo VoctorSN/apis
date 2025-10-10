@@ -12,14 +12,11 @@ async function getFourMoreTypes() {
         for (let i = 0; i < 4; i++) {
 
             types.push(await getType(currentId));
-            currentId += 1
             if (currentId === 20) {
-                currentId = 10001
-            }
-            if (currentId === 10002) {
                 eliminarBoton()
                 return
             }
+            currentId += 1
         }
 
     } catch (err) {
