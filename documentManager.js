@@ -105,6 +105,14 @@ function createAudioControlsDiv() {
     return audioControlsDiv
 }
 
+// Contenedor para los tipos en la tarjeta principal
+function createTypesHeaderDiv() {
+    const typesDiv = document.createElement('div')
+    typesDiv.id = 'main_types_header'
+    typesDiv.className = 'types_header'
+    return typesDiv
+}
+
 /**
  * Construye la carta del Pokemon anterior
  */
@@ -114,6 +122,10 @@ function buildPreCard() {
     let cardDiv = createCardDiv()
     cardDiv.className += ' dimmed'
     let dataDiv = createDataDiv()
+    // Encabezado de tipos para carta previa
+    const preTypesHeader = document.createElement('div')
+    preTypesHeader.id = 'pre_types_header'
+    preTypesHeader.className = 'types_header'
     let pokemonImage = createPokemonImage()
     pokemonImage.id = 'pre_pokemon_image'
 
@@ -144,9 +156,14 @@ function buildPreCard() {
         pokemonImage.src = 'img/default_img.png';
     }
 
+    // Montaje del contenido
+    dataDiv.appendChild(preTypesHeader)
     dataDiv.appendChild(pokemonImage)
     cardDiv.appendChild(dataDiv)
     pokemonCardsDiv.appendChild(cardDiv)
+
+    // Rellenar tipos del Pokémon anterior de forma asíncrona
+    tryPopulateNeighborTypes('pre_types_header', (currentPokemon?.id || 0) - 1)
 }
 
 /**
@@ -158,6 +175,10 @@ function buildPostCard() {
     let cardDiv = createCardDiv()
     cardDiv.className += ' dimmed'
     let dataDiv = createDataDiv()
+    // Encabezado de tipos para carta siguiente
+    const postTypesHeader = document.createElement('div')
+    postTypesHeader.id = 'post_types_header'
+    postTypesHeader.className = 'types_header'
     let pokemonImage = createPokemonImage()
     pokemonImage.id = 'post_pokemon_image'
 
@@ -184,9 +205,14 @@ function buildPostCard() {
         pokemonImage.src = 'img/default_img.png';
     }
 
+    // Montaje del contenido
+    dataDiv.appendChild(postTypesHeader)
     dataDiv.appendChild(pokemonImage)
     cardDiv.appendChild(dataDiv)
     pokemonCardsDiv.appendChild(cardDiv)
+
+    // Rellenar tipos del Pokémon siguiente de forma asíncrona
+    tryPopulateNeighborTypes('post_types_header', (currentPokemon?.id || 0) + 1)
 }
 
 /**
@@ -197,6 +223,8 @@ function buildMainCard() {
 
     let cardDiv = createCardDiv()
     let dataDiv = createDataDiv()
+    // Contenedor para los tipos del Pokémon (encabezado)
+    let typesHeaderDiv = createTypesHeaderDiv()
     let labelNameDiv = createLabelNameDiv()
     let imageContainer = createImageContainer()
     let infoListsDiv = createInfoListsDiv()
@@ -217,6 +245,8 @@ function buildMainCard() {
     infoListsDiv.appendChild(abilitiesDiv)
 
     // Ensamblar data div
+    // Encabezado: tipos y nombre
+    dataDiv.appendChild(typesHeaderDiv)
     dataDiv.appendChild(labelNameDiv)
     dataDiv.appendChild(imageContainer)
     dataDiv.appendChild(infoListsDiv)
@@ -236,6 +266,7 @@ function setData(pokemon) {
     setName(pokemon.name)
     addButtons()
     chargeImage()
+    setTypes(pokemon.types)
     setStats(pokemon.stats)
     setAbilities(pokemon.abilities)
     setAudio(pokemon.cries.latest)
@@ -277,6 +308,46 @@ function setImage(imageUrl) {
         return;
     }
     pokemonImage.setAttribute('src', imageUrl)
+}
+
+/**
+ * Renderiza los tipos del Pokémon en el encabezado de la tarjeta principal
+ */
+function setTypes(types) {
+    setTypesInto('main_types_header', types)
+}
+
+// Pinta tipos dentro de un contenedor por id
+function setTypesInto(headerId, types) {
+    const header = document.getElementById(headerId)
+    if (!header) return;
+    header.innerHTML = ''
+
+    if (!types || !Array.isArray(types) || types.length === 0) {
+        return;
+    }
+
+    types.forEach(t => {
+        const typeName = (t?.name) ? t.name : (t?.type && t.type.name) ? t.type.name : ''
+        if (!typeName) return;
+        const badge = document.createElement('span')
+        badge.className = `type-badge type-${typeName}`
+        badge.textContent = typeName
+        header.appendChild(badge)
+    })
+}
+
+// Intenta obtener los tipos de un vecino (por id) y pintarlos en el header indicado
+async function tryPopulateNeighborTypes(headerId, pokemonId) {
+    try {
+        if (!pokemonId || pokemonId < 1) return;
+        const neighbor = await getPokemonWithName(pokemonId)
+        if (neighbor && Array.isArray(neighbor.types)) {
+            setTypesInto(headerId, neighbor.types)
+        }
+    } catch (_) {
+        // Silencioso: si falla, simplemente no pinta tipos
+    }
 }
 
 function setAudio(audio) {
